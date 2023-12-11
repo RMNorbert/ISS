@@ -7,21 +7,25 @@ import os
 base_url = os.environ.get("URL")
 
 
-def add(data):
-    secret_text = data.get('secret')
-    expire_after_views = data.get('expire_after_views')
-    expire_after = int(data.get('expire_after'))
-    created_at = datetime.now()
-    expires_at = created_at + timedelta(minutes=expire_after)
+def add(secret_text, expire_after_views, expire_after):
+    try:
+        created_at = datetime.now()
+        expires_at = created_at + timedelta(minutes=expire_after)
 
-    hashed_and_salted_secret = hash_and_salt_secret(secret_text, created_at)
-    store_secret(hashed_and_salted_secret, secret_text,
-                 created_at, expires_at, expire_after_views)
-    return base_url + hashed_and_salted_secret
+        hashed_and_salted_secret = hash_and_salt_secret(
+            secret_text, created_at)
+        store_secret(hashed_and_salted_secret, secret_text,
+                     created_at, expires_at, expire_after_views)
+        return base_url + hashed_and_salted_secret
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
 
 def retrieve(searched_hash):
-    return retrieve_secret_by_hash(searched_hash)
+    try:
+        return retrieve_secret_by_hash(searched_hash)
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
 
 def hash_and_salt_secret(secret_text, created_at):

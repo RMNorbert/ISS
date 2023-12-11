@@ -1,31 +1,37 @@
 #!/usr/bin/env python
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, request, Response, json
+from flask import Flask, json, request, Response, make_response, jsonify
 from server.database.secret_service import *
 from server.scheduler_jobs.remove_expired_secret import remove
 
 app = Flask(__name__)
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=remove, trigger='interval', minutes=5)
+scheduler.add_job(func=remove, trigger='interval', minutes=3)
 
 
 @app.post('/v1/secret')
 def add_secret():
-    request_data = request.form.to_dict()
+    secret_text = request.form.get('secret')
+    expire_after_views = int(request.form.get("expire_after_views"))
+    expire_after = int(request.form.get('expire_after'))
+
+    if secret_text == '' or expire_after_views == 0:
+        return Response("Bad request", status=400)
+
     content_type = request.content_type
-    print(content_type)
+
     if not content_type == 'application/x-www-form-urlencoded':
         return Response("Unsupported content type", status=415)
 
     accept_type = request.headers.get('Accept')
-    link = add(request_data)
+    link = add(secret_text, expire_after_views, expire_after)
 
     if accept_type == 'application/json':
-        return Response(json.dumps(link), content_type='application/json')
+        return make_response(jsonify(link), 200)
 
     elif accept_type == 'application/xml':
         xml_link = return_as_xml(link)
-        return Response(xml_link, content_type='application/xml')
+        return make_response(xml_link, 200)
 
 
 @app.get('/v1/secret/<hash>')

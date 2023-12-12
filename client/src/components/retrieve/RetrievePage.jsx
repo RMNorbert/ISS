@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import background from "../../assets/background.mp4";
 
 function RetrievePage() {
     const [hash, setHash] = useState("");
@@ -52,7 +51,6 @@ function RetrievePage() {
     
         return (
         <div className="home">
-            <video src={background} autoPlay muted loop id="myVideo" />
             <div className="homeContent">
             <div className="inputBox">
                 <label>Select response type:</label>
@@ -80,9 +78,14 @@ function RetrievePage() {
                 </button>   
             </div>
             {fetched && 
-            <div className="homeContent">
+            <div className="retrieved">
                     <h1>Here is the retrieved secret:</h1>
                     <h1 className="card">{secret}</h1>
+                    <button
+                    onClick={() => {navigator.clipboard.writeText(secret)}}
+                    >
+                        Copy
+                    </button>
             </div>}
             <h3 
                 style={{ display: isHidden ? "none" : "block" }}>

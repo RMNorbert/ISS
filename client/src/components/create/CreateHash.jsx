@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Card.css"
+import CopyToClipboard from "../copy/Copy";
 
 function CreateHash () {
     const [isHidden, setIsHidden] = useState (true);
@@ -130,7 +131,7 @@ function CreateHash () {
                     <h3>The hash you can share your secret with :</h3>
                     <h4>{hash && hash}</h4>
                     <button
-                    onClick={() => {navigator.clipboard.writeText(hash)}}
+                    onClick={() => {CopyToClipboard(hash)}}
                     >
                         Copy
                     </button>

@@ -1,0 +1,44 @@
+h1, h3 {
+    color: white;
+}
+
+label {
+    padding-right: 10px;
+    color: white;
+}
+.inputBox{
+    width: 100%;
+    display:grid;
+}
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}  
+.home{
+    position: fixed;
+}
+
+.homeContent {
+    position: fixed;
+    background-color: black;
+    margin-top: 10%;
+    margin-left: 30%;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    min-width: 40%;
+}
+
+.hash {
+    position: fixed;
+    background-color: rgb(55, 53, 53);
+    margin-left: -10%;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    min-width: 40%;   
+}

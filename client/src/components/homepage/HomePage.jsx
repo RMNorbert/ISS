@@ -1,4 +1,4 @@
-import CreateLink from "../create/CreateLink";
+import CreateHash from "../create/CreateHash";
 import "./HomePage.css";
 import background from "../../assets/background.mp4"
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ function HomePage() {
         <div className="home">
         <video src={background} autoPlay muted loop id="myVideo"/>
             <div className="homeContent">
-            <CreateLink />
+            <CreateHash />
             <button
                 onClick={() => navigate("/retrieve")}
             >

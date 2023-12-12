@@ -2,9 +2,6 @@ from server.database.crud.crud_operations import *
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 import hashlib
-import os
-
-base_url = os.environ.get("URL")
 
 
 def add(secret_text, expire_after_views, expire_after):
@@ -16,7 +13,7 @@ def add(secret_text, expire_after_views, expire_after):
             secret_text, created_at)
         store_secret(hashed_and_salted_secret, secret_text,
                      created_at, expires_at, expire_after_views)
-        return base_url + hashed_and_salted_secret
+        return hashed_and_salted_secret
     except Exception as e:
         print(f"Unexpected error: {e}")
 
@@ -29,14 +26,20 @@ def retrieve(searched_hash):
 
 
 def hash_and_salt_secret(secret_text, created_at):
-    salt = created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-    salted_secret = (secret_text + salt).encode('UTF-8')
-    return hashlib.sha3_512(salted_secret).hexdigest()
+    try:
+        salt = created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        salted_secret = (secret_text + salt).encode('UTF-8')
+        return hashlib.sha3_512(salted_secret).hexdigest()
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
 
 def return_as_xml(response_data):
-    root = ET.Element("root")
-    response = ET.SubElement(root, "response")
-    response.text = response_data
-    xml_string = ET.tostring(root, encoding="utf-8").decode("utf-8")
-    return xml_string
+    try:
+        root = ET.Element("root")
+        response = ET.SubElement(root, "response")
+        response.text = response_data
+        xml_string = ET.tostring(root, encoding="utf-8").decode("utf-8")
+        return xml_string
+    except Exception as e:
+        print(f"Unexpected error: {e}")

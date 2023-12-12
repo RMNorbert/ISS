@@ -11,7 +11,8 @@ def initialize_db(created_engine):
     try:
         db_name = "iss"
         with created_engine.connect() as connection:
-            connection.execute(text(f"CREATE DATABASE IF NOT EXISTS {db_name}"))
+            connection.execute(
+                text(f"CREATE DATABASE IF NOT EXISTS {db_name}"))
             connection.execute(text(f"USE {db_name}"))
     except Exception as e:
         print(f"Unexpected error: {e}")

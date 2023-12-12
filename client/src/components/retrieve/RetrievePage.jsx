@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CopyToClipboard from "../copy/Copy";
 
 function RetrievePage() {
     const [hash, setHash] = useState("");
@@ -82,7 +83,7 @@ function RetrievePage() {
                     <h1>Here is the retrieved secret:</h1>
                     <h1 className="card">{secret}</h1>
                     <button
-                    onClick={() => {navigator.clipboard.writeText(secret)}}
+                    onClick={() => CopyToClipboard(secret)}//{navigator.clipboard.writeText(secret)}}
                     >
                         Copy
                     </button>

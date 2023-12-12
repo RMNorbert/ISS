@@ -63,7 +63,8 @@ def execute_update(requested_hash):
 
 def get_hash(requested_hash):
     try:
-        select_stmt = select(table).where(table.c.salted_hash == requested_hash)
+        select_stmt = select(table).where(
+            table.c.salted_hash == requested_hash)
         result = session.execute(select_stmt).fetchone()
         session.commit()
         return result.secret_text

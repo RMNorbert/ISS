@@ -1,5 +1,10 @@
+body {
+    background-color: rgb(3, 3, 64);
+
+}
 h1, h3 {
     color: white;
+    padding-bottom: 5px;
 }
 
 label {
@@ -10,15 +15,9 @@ label {
     width: 100%;
     display:grid;
 }
-#myVideo {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-}  
 .home{
     position: fixed;
+    background-color: rgb(58, 58, 240);
 }
 
 .homeContent {
@@ -40,5 +39,17 @@ label {
     padding-bottom: 10px;
     border-radius: 20px;
     font-weight: 600;
+    min-width: 40%;   
+}
+.message {
+    color: rgb(139, 6, 6);
+}
+.retrieved {
+    position: fixed;
+    background-color: black;
+    margin-top: 5%;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
     min-width: 40%;   
 }

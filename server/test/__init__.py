@@ -1,7 +1,5 @@
 import unittest
 from flask_testing import TestCase
-from flask import Flask
-from flask.testing import FlaskClient
 from server.__main__ import app
 
 

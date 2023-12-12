@@ -3,16 +3,41 @@ import "./Card.css"
 
 function CreateHash () {
     const [isHidden, setIsHidden] = useState (true);
+    const [messageHidden, setMessageHidden] = useState (true);
+    const [message, setMessage] = useState ('');
     const [hash, setHash] = useState('');
     const [acceptType, setAcceptType] = useState('application/json');
     const [formData, setFormData] = useState({
         secret: '',
-        expire_after_views: 0,
+        expire_after_views: 1,
         expire_after: 0,
     });
     
+    function dataIsInvalid() {
+        let isInValid = true;
+        if(formData.secret.length < 1 ){
+            setMessage("Secret cannot be empty")
+            return isInValid;
+        }
+
+        if(formData.expire_after_views < 1 ) {
+            setMessage("Secret cannot be shared with less than 1 views")
+            return isInValid;
+        }
+         
+        if(formData.expire_after < 0) {
+            setMessage("Secret cannot be shared with less 1 minute to live")
+            return isInValid;
+        }
+        return false;
+    }
+
     const  HandleSubmit = async (e) => {
         e.preventDefault();
+        if(dataIsInvalid()){
+            setMessageHidden(false)
+            return;
+        }
         const url = '/v1/secret';
         const requestOptions = {
             method: 'POST',
@@ -68,13 +93,15 @@ function CreateHash () {
                             <label htmlFor="expire_after_views">Secret expire after number of views:</label>
                             <input type="number"id="expire_after_views"
                                 value={formData.expire_after_views}
+                                min={1}
                                 onChange={handleChange}
                             />
                         </div>
                         <div className="inputBox">
                             <label htmlFor="expire_after">Secret expire after minutes:</label>
                             <input type="number" id="expire_after"
-                             placeholder="if it is set to 0 then the secret wont expire by time"
+                                min={0}
+                                //placeholder="if it is set to 0 then the secret wont expire by time"
                                 value={formData.expire_after}
                                 onChange={handleChange}
                              />
@@ -94,10 +121,21 @@ function CreateHash () {
                         </button>
                     </form>
                 </div>
+                    <h3 className="message"
+                        style={{ display: messageHidden ? "none" : "block" }}
+                    >{message}
+                    </h3>
                 </div>
                 <div className="hash" style={{ display: isHidden ? "none" : "block"}}>
                     <h3>The hash you can share your secret with :</h3>
-                    {hash && hash}
+                    <h4>{hash && hash}</h4>
+                    <button
+                    onClick={() => {navigator.clipboard.writeText(hash)}}
+                    >
+                        Copy
+                    </button>
+                    
+                    <button onClick={() => setIsHidden(true)}>Return</button>
                 </div>
         </div>
     )

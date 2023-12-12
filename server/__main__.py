@@ -1,13 +1,23 @@
 #!/usr/bin/env python
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, send_from_directory
 from server.database.secret_service import *
 from server.scheduler_jobs.remove_expired_secret import remove
 from constants import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static/build/', static_url_path='')
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=remove, trigger='interval', minutes=3)
+
+
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.route('/<path:filename>')
+def send_file(filename):
+    return send_from_directory("static/", filename)
 
 
 @app.post('/v1/secret')
